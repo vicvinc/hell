@@ -1,0 +1,39 @@
+INSDIR = ./bin
+INCLUDE = ./inc
+LIBDIR = ./lib
+
+CC = g++
+CFLAGS = -g -Wall -ansi
+INCLUDEFLAGS = -I$(INCLUDE)
+COMMFLAGS = $(CFLAGS) $(INCLUDEFLAGS)
+
+SRCMAIN = main.cpp
+SRCHELL = ./lib/hell.cpp
+
+OBJMAIN = $(SRCMAIN:.cpp=.o)
+OBJHELL = $(SRCHELL:.cpp=.o)
+
+EXEMAIN = $(INSDIR)/main
+EXEHELL = $(INSDIR)/hell
+
+all: hell
+
+main:: $(OBJMAIN)
+	$(CC) $(COMMCFLAGS) -o $(EXEMAIN) $(OBJMAIN)
+hell:: $(OBJHELL)
+	$(CC) $(COMMCFLAGS) -o $(EXEHELL) $(OBJHELL)
+
+clean:
+	-rf -f *.o *~
+
+install: hell
+	@if [ -d $(INSDIR) ]; \
+	then \
+		cp hell $(INSDIR);\
+		chmod a+x $(INSDIR)/hell;\
+		chmod og-w $(INSDIR)/hell;\
+		echo "Installed in $(INSDIR)";\
+	else \
+		echo "Sorry, $(INSDIR) does not exist";\
+	fi
+
